@@ -1,11 +1,7 @@
 const express = require('express');
-const router = express.Router();
+const router = express.Router()
 
-try {
-    const notesRouter = require('./notes');
-    router.use('/notes', notesRouter);
-} catch (error) {
-    console.error('Error setting up notesRouter:', error);
-}
+const notesRouter = require('./notes');
+router.use('/notes', notesRouter);
 
 module.exports = router;
