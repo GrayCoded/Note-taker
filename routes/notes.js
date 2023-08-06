@@ -30,4 +30,26 @@ notes.post('/', (req, res) => {
   }
 });
 
+router.delete('/:id', (req, res) => {
+  console.info(`${req.method} request received to delete a note`);
+
+  const noteId = req.params.id;
+  if (!noteId) {
+    res.status(400).json({ error: 'Note ID is required.' });
+    return;
+  }
+
+  readFromFile('./db/db.json')
+    .then((data) => JSON.parse(data))
+    .then((notes) => {
+      const updatedNotes = notes.filter((note) => note.id !== noteId);
+      writeToFile('./db/db.json', JSON.stringify(updatedNotes));
+      res.json(`Note with ID ${noteId} deleted successfully`);
+    })
+    .catch((err) => {
+      console.error('Error deleting note:', err);
+      res.status(500).json({ error: 'An error occurred while deleting the note.' });
+    });
+});
+
 module.exports = notes;
