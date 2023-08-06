@@ -16,7 +16,7 @@ notes.post('/', (req, res) => {
 
   const { title, text } = req.body;
 
-  if (req.body) {
+  if (title && text) {
     const newNote = {
       title,
       text,
@@ -26,7 +26,7 @@ notes.post('/', (req, res) => {
     readAndAppend(newNote, './db/db.json');
     res.json(`Note added successfully 🚀`);
   } else {
-    res.error('Error in adding note');
+    res.status(400).json({ error: 'Title and text are required.' });
   }
 });
 
